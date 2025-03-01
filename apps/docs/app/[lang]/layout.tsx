@@ -1,6 +1,6 @@
 import "../global.css";
 
-import { I18nProvider, Translations } from "fumadocs-ui/i18n";
+import { I18nProvider } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider";
 
 export default async function RootLayout({

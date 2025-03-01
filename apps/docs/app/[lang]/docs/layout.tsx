@@ -1,6 +1,5 @@
 import { baseOptions } from "@/app/layout.config";
 import { source } from "@/lib/source";
-import { RootToggle } from "fumadocs-ui/components/layout/root-toggle";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { ReactNode } from "react"
 
