@@ -26,6 +26,7 @@ jobs:
           release-type: node
           package-name: tusk
           changelog-path: "CHANGELOG.md"
+          path: "packages/tusk"
 
       - name: 📥 Checkout
         uses: actions/checkout@v4
