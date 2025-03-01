@@ -39,26 +39,26 @@ jobs:
           node-version: "22.x"
           registry-url: "https://registry.npmjs.org"
 
-      - name: 🎯 Cache Dependencies
+      - name: 🎯 Cache pnpm dependencies
         uses: actions/cache@v4
-        if: ${{ steps.release.outputs.release_created }}
         with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('packages/tusk/package-lock.json') }}
+          path: ~/.pnpm-store
+          key: pnpm-linux-${{ matrix.node-version }}-${{ hashFiles('packages/tusk/pnpm-lock.yaml') }}
           restore-keys: |
-            npm-linux-
+            pnpm-linux-${{ matrix.node-version }}-
+            pnpm-linux-
 
       - name: 📦 Install Dependencies
         if: ${{ steps.release.outputs.release_created }}
         run: |
           cd packages/tusk
-          npm ci
+          pnpm install
 
       - name: 🏗️ Build
         if: ${{ steps.release.outputs.release_created }}
         run: |
           cd packages/tusk
-          npm run build
+          pnpm run build
 
       - name: 🚀 Publish Package
         if: ${{ steps.release.outputs.release_created }}
@@ -66,4 +66,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           cd packages/tusk
-          npm publish --access public
+          pnpm run publish --access public
