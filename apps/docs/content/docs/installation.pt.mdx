@@ -1,0 +1,55 @@
+---
+title: Instalação
+icon: HiCommandLine
+---
+import { Step, Steps } from "fumadocs-ui/components/steps";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">📦 Instalando o Tusk</span></div>
+
+Aprenda como instalar e configurar o Tusk em seu projeto.
+
+---
+
+<Steps>
+    <Step>
+        ## Instalar o Tusk
+        Comece instalando o Tusk usando seu gerenciador de pacotes favorito.
+        <Tabs items={["npm", "pnpm", "yarn", "bun"]}>
+            <Tab>
+                ```bash title="terminal"
+                npm install tusk
+                ```
+            </Tab>
+            <Tab>
+                ```bash title="terminal"
+                pnpm add tusk
+                ```
+            </Tab>
+            <Tab>
+                ```bash title="terminal"
+                yarn add tusk
+                ```
+            </Tab>
+            <Tab>
+                ```bash title="terminal"
+                bun add tusk
+                ```
+            </Tab>
+        </Tabs>
+    </Step>
+    <Step>
+        ## Importar o Tusk
+        Depois de instalar o Tusk, você pode importá-lo em seu projeto.
+        ```ts
+        import { patch, unpatch } from "tusk";
+        ```
+    </Step>
+    <Step>
+        E é isso! 🎉 Você está pronto para utilizar o poder do Tusk em seu projeto. Bom código! 💻✨
+    </Step>
+</Steps>
+
+---
+
+**🧠 Dica Pro** ╺╸ Use `npm`, `yarn` ou outras ferramentas dependendo da configuração do seu projeto, mas mantenha consistência usando apenas uma!

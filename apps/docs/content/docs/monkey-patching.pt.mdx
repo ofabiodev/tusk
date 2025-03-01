@@ -1,0 +1,42 @@
+---
+title: Monkey Patching
+icon: HiAcademicCap
+---
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">📦 O que é Monkey Patching</span></div>
+
+Monkey patching é uma técnica que permite modificar código em tempo de execução alterando classes, módulos ou funções.
+Ela permite que você estenda ou modifique o comportamento do código existente sem alterar diretamente seus arquivos fonte.
+
+---
+
+## Entendendo Monkey Patching
+
+Pense no monkey patching como aplicar um patch temporário ou modificação em um programa em execução. 
+Assim como você pode consertar um pneu sem substituí-lo, o monkey patching permite modificar o comportamento do código sem alterar o código fonte original.
+
+### Exemplo Básico
+```ts title="example.ts"
+// Código original
+const MathHelper = {
+  add: (a: number, b: number) => a + b
+};
+
+// Monkey patching
+MathHelper.add = (a, b) => {
+  return a + b;
+};
+```
+
+<Callout type="warn" title="Use com Cautela">
+  O monkey patching, embora poderoso, vem com riscos significativos:
+  - Pode levar a problemas difíceis de depurar se não for rastreado adequadamente
+  - Pode quebrar quando o código original for atualizado
+  - Pode causar comportamento inesperado em produção
+  - Torna o código mais difícil de manter e entender
+  
+  Sempre documente seus patches e considere-os como soluções temporárias em vez de correções permanentes.
+</Callout>
+
+---
+
+**🧠 Dica Pro** ╺╸ Use monkey patching com moderação—é poderoso, mas pode levar a problemas difíceis de depurar se usado em excesso!

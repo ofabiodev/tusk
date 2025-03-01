@@ -1,0 +1,83 @@
+---
+title: Boas Práticas  
+icon: HiCheckCircle  
+---  
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">👷‍♂️ Boas Práticas para Monkey Patching</span></div>  
+
+Monkey patching é uma **ferramenta poderosa**, mas com grande poder vem grande responsabilidade! 🕷️ 
+Aqui estão algumas **melhores práticas** para garantir que seus patches sejam seguros, fáceis de manter e eficazes.  
+
+---
+
+## Use com Moderação  
+Monkey patching deve ser um último recurso, não uma solução padrão. Sempre considere alternativas como:  
+- **Wrappers:** Crie uma função ou classe que envolva o código original.  
+- **Middleware:** Use padrões de middleware para estender funcionalidades.  
+- **Pull Requests:** Contribua com correções ou melhorias diretamente na biblioteca.  
+
+**Por quê?** O uso excessivo de patches pode tornar o código difícil de manter e depurar.  
+
+## Documente seus Patches  
+- **Por que** o patch foi aplicado.  
+- **O que** o patch faz.  
+- **Quando** ele foi adicionado e por quem.  
+
+### Exemplo:  
+```typescript title="fix.ts"
+import { patch } from "tusk";
+
+const MathHelper = {
+    add(num: number, num2: number) {
+        return num - num2
+    }
+}
+
+/**
+ * Patch: Corrige subtração incorreta no MathHelper.add  
+ * Motivo: O método original subtrai em vez de somar.  
+ * Autor: João Silva  
+ * Data: 2025-28-2  
+ */
+patch(MathHelper, "add", function(_original, a, b) {
+    return a + b
+});
+```  
+
+## Teste Rigorosamente  
+- **Isole os Patches:** Teste cada patch individualmente para garantir que funcione como esperado.  
+- **Casos Limite:** Teste com valores extremos para evitar comportamentos inesperados.  
+- **Testes de Integração:** Verifique se o patch não quebra outras partes do código.  
+
+**Por quê?** Patches podem introduzir bugs sutis e difíceis de detectar.  
+
+## Desfaça o Patch Quando Não For Mais Necessário  
+Sempre restaure o comportamento original quando o patch não for mais necessário.  
+Use o método `unpatch` da Tusk para limpar.  
+
+```ts title="unpatch.ts"
+import { patch } from "tusk";
+
+// Aplica o patch
+patch(Array.prototype, "flat", function (original, depth) {
+    const flattened = original.call(this, depth); 
+    return flattened.map(() => 0); 
+});
+
+// Desfaz o patch quando não for mais necessário
+unpatch(Array.prototype, "flat");    
+```  
+
+## Comunique-se com Sua Equipe  
+- **Code Reviews:** Discuta patches durante revisões de código para garantir que sejam necessários e bem implementados.  
+- **Documentação:** Compartilhe informações sobre patches com sua equipe.  
+- **Convenções de Nome:** Use nomes claros para métodos modificados (ex.: `_patchedMethod`).  
+
+## Evite Efeitos Colaterais  
+- **Mudanças Globais:** Tenha cuidado ao modificar objetos globais (ex.: `Array.prototype`).  
+- **Bibliotecas de Terceiros:** Evite modificar bibliotecas externas, a menos que seja absolutamente necessário.  
+- **Performance:** Certifique-se de que o patch não afeta negativamente o desempenho.  
+
+---
+
+**🧠 Dica Pro** ╺╸ Documente cada patch e seu propósito—seu futuro eu (e sua equipe) vão agradecer!

@@ -1,0 +1,71 @@
+---
+title: Casos de Uso
+icon: HiLightBulb
+---
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">🧠 Onde usar Monkey Patch?</span></div>
+
+As capacidades de monkey patching do Tusk podem ser aplicadas em diversos cenários. Aqui estão alguns casos comuns onde o Tusk se destaca:
+
+---
+
+## Desenvolvimento e Depuração
+### Prototipação de Funcionalidades
+Teste novas implementações sem modificar a base de código original:
+```ts title="math.ts"
+const math = {
+    add: (a: number, b: number) => a + b
+};
+
+math.add = (a: number, b: number) => {
+  return(a - b) * b;
+};
+``` 
+
+### Depuração
+Adicione logs ou informações de depuração a funções existentes:
+```ts title="logger.ts"
+const logger = {
+    log: (message: string) => {
+      console.log(`[${new Date().toISOString()}] ${message}`);
+    },
+    error: (message: string) => {
+        console.log(`[${new Date().toISOString()} | ERROR] ${message}`)
+    }
+};
+
+logger.error = (message: string) => {
+    console.log(message + " | DEBUG")
+}
+```
+
+## Cenários em Produção
+### Hotfixes
+Implemente correções críticas sem precisar de um ciclo completo de implantação:
+- Corrigir vulnerabilidades de segurança
+- Ajustar problemas de desempenho
+- Lidar com casos extremos
+
+### Testes A/B
+Implemente diferentes caminhos de código para testes:
+- Comparar métricas de desempenho
+- Testar variações na experiência do usuário
+- Validar correções de bugs
+
+## Gerenciamento de Código Legado
+### Compatibilidade de API
+Mantenha compatibilidade com versões mais antigas:
+- Adicione métodos ausentes
+- Transforme chamadas obsoletas
+- Faça a ponte entre diferenças de API
+
+### Aprimoramento de Funcionalidades
+Adicione recursos modernos a sistemas legados:
+- Implemente padrões assíncronos como async/await
+- Adicione verificação de tipos
+- Melhore o tratamento de erros
+
+---
+
+**🧠 Dica Pro** ╺╸  Monkey patching é ótimo para correções rápidas, mas sempre busque soluções de longo prazo, como PRs para bibliotecas upstream!

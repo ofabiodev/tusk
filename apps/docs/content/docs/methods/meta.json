@@ -1,0 +1,9 @@
+{
+    "title": "Methods",
+    "icon": "HiSparkles",
+    "defaultOpen": true,
+    "pages": [
+        "patch",
+        "unpatch"
+    ]
+}

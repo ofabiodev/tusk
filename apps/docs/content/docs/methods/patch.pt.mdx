@@ -1,0 +1,121 @@
+---
+title: Patch
+icon: HiPlusCircle
+---
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">➕ Método: Patch</span></div>
+
+O método `patch` é a **função principal do Tusk**, permitindo modificar ou estender métodos dinamicamente em tempo de execução.  
+Ele foi projetado para ser **seguro, limpo e fácil de usar**, tornando o monkey patching muito mais simples! 🌬️
+
+---
+
+<Callout type="info" title="Diferenças Entre 'original()' e 'original.call(this)'">
+  - **Use `original.call(this)` quando:** O método depende do `this`, como ao acessar propriedades do objeto (`this.value`, `this.name`). Sem `call(this)`, o `this` pode ser `undefined`, causando erros.
+  - **Use `original()` quando:** A função não depende do `this`, como funções estáticas (`Math.max`), funções independentes ou métodos que usam apenas argumentos passados sem referenciar o `this`.
+</Callout>
+
+## Sintaxe
+```ts
+patch(target: Object, methodName: string, implementation: Function): void;
+``` 
+
+## Parâmetros
+<TypeTable
+  type={{
+    target: {
+      description:
+        "O objeto ou protótipo que você deseja modificar.",
+      type: "Object",
+      required: true
+    },
+    methodName: {
+      description:
+        "O nome do método que será sobrescrito.",
+      type: "string",
+      required: true
+    },
+    implementation: {
+      description:
+        "A nova implementação do método. Recebe o método original como primeiro parâmetro.",
+      type: "Function",
+      required: true
+    },
+  }}
+/>
+
+## Exemplo de Uso
+Extendendo o protótipo de Array com um método `sum`
+```ts title="math.ts"
+import { patch } from "tusk";
+
+patch(Array.prototype, "flat", function (original, depth) {
+    const flattened = original.call(this, depth); 
+    return flattened.map(() => 0); 
+});
+
+const map = [1, 2, 3, 4, 5];
+const flattenedArray = map.flat();
+console.log(flattenedArray); // Output: [0, 0, 0, 0]
+``` 
+
+### Corrigindo uma Biblioteca de Terceiros
+Patch para evitar duplicatas no método `insertMultiple`
+```ts title="list.ts"
+import { patch } from "tusk";
+
+import { ListManager } from "listner";
+
+const oldManager = new ListManager();
+oldManager.insertMultiple([{ id: 1, name: "Item 1" }, { id: 2, name: "Item 2" }]);
+oldManager.insertMultiple([{ id: 2, name: "Item 2" }, { id: 3, name: "Item 3" }]);
+
+console.log(oldManager.getAll());
+/*                                                                                   */
+
+patch(ListManager.prototype, "insertMultiple", function(original, items) {
+    const existingItems = this.getAll();
+    const newItems = items.filter(item => 
+        !existingItems.some(existing => existing.id === item.id)
+    );
+    if (newItems.length > 0) {
+        original.call(this, newItems);
+    }
+});
+
+const manager = new ListManager();
+manager.insertMultiple([{ id: 1, name: "Item 1" }, { id: 2, name: "Item 2" }]);
+manager.insertMultiple([{ id: 2, name: "Item 2" }, { id: 3, name: "Item 3" }]);
+
+console.log(manager.getAll());
+```
+#### Saída
+<Tabs items={["Antes", "Depois"]}>
+    <Tab>
+        O item `{ id: 2, name: "Item 2" }` foi adicionado novamente porque o método original não verificava duplicatas.
+        ```bash title="terminal"
+        [
+            { id: 1, name: "Item 1" },
+            { id: 2, name: "Item 2" },
+            { id: 2, name: "Item 2" },
+            { id: 3, name: "Item 3" }
+        ]
+        ```
+    </Tab>
+    <Tab>
+        Após o patch, a duplicata `{ id: 2, name: "Item 2" }` não foi adicionada, pois o método agora verifica se o item já existe antes da inserção.
+        ```bash title="terminal"
+        [
+            { id: 1, name: "Item 1" },
+            { id: 2, name: "Item 2" },
+            { id: 3, name: "Item 3" }
+        ]
+        ```
+    </Tab>
+</Tabs>
+
+---
+
+**🧠 Dica Pro** ╺╸ Teste seus patches em um ambiente controlado antes de implementá-los em produção para evitar efeitos colaterais inesperados!

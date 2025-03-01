@@ -1,0 +1,71 @@
+---
+title: Use Cases
+icon: HiLightBulb
+---
+import { Step, Steps } from "fumadocs-ui/components/steps";
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">🧠 Where use Monkey Patch?</span></div>
+
+Tusk's monkey patching capabilities can be applied in various scenarios. Here are some common use cases where Tusk shines:
+
+---
+
+## Development and Debbuging
+### Feature Prototyping
+Test new implementations without modifying the original codebase:
+```ts title="math.ts"
+const math = {
+    add: (a: number, b: number) => a + b
+};
+
+math.add = (a: number, b: number) => {
+  return(a - b) * b;
+};
+``` 
+
+### Debugging
+Add logging or debugging information to existing functions
+```ts title="logger.ts"
+const logger = {
+    log: (message: string) => {
+      console.log(`[${new Date().toISOString()}] ${message}`);
+    },
+    error: (message: string) => {
+        console.log(`[${new Date().toISOString()} | ERROR] ${message}`)
+    }
+};
+
+logger.error = (message: string) => {
+    console.log(message + " | DEBUG")
+}
+```
+
+## Production scenarios
+### Hot fixes
+Deploy critical fixed without full deployment cycles:
+- Fix security vulnerabilities
+- Patch performance issues
+- Handle edge cases
+
+### A/B Testing
+Implement different code paths for testing:
+- Compare performance metrics
+- Test user experience variations
+- Validate bug fixes
+
+## Legacy Code Managment
+### API Compatibility
+Maintain compatibility with older versions:
+- Add missing methods
+- Transform deprecated calls
+- Bridge API differences
+
+### Feature Enhancement
+Add modern capabilities to legacy systems:
+- Implement async/await patterns
+- Add type checking
+- Enhance error handling
+
+---
+
+**🧠 Pro Tip** ╺╸  Monkey patching is perfect for quick fixes, but always aim for long-term solutions like PRs to upstream libraries!

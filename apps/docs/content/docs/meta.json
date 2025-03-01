@@ -1,0 +1,18 @@
+{
+    "title": "core",
+    "root": true,
+    "pages": [
+        "---Introduction---",
+        "index",
+        "installation",
+        "---Concepts---",
+        "monkey-patching",
+        "use-cases",
+        "---Guide---",
+        "methods",
+        "good-practices",
+        "---Extras---",
+        "comparasion"
+    ]
+}
+  

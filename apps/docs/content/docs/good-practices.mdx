@@ -1,0 +1,80 @@
+---
+title: Good Practices
+icon: HiCheckCircle
+---
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">👷‍♂️ Good Practices for Monkey Patching</span></div>
+
+Monkey patching is a **powerful tool**, but with great power comes great responsibility! 🕷️ 
+Here are some **best practices** to ensure your patches are safe, maintainable, and effective.
+
+---
+
+## Use Sparingly
+Monkey patching should be a last resort, not a go-to solution. Always consider alternatives like:
+- **Wrappers:** Create a wrapper function or class around the original code.
+- **Middleware:** Use middleware patterns to extend functionality.
+- **Pull Requests:** Contribute fixes or features directly to the library.
+**Why?** Overusing patches can make your codebase harder to maintain and debug.
+
+## Document Your Patches
+Follow the **3W** rule:
+- **Why** the patch was applied.
+- **What** the patch does.
+- **When** it was added and by whom.
+
+### Example:
+```typescript title="fix.ts"
+import { patch } from "tusk";
+
+const MathHelper = {
+    add(num: number, num2: number) {
+        return num - num2
+    }
+}
+
+/**
+ * Patch: Fix incorrect subtraction in MathHelper.add  
+ * Reason: The original method subtracts instead of adding.  
+ * Author: John Doe  
+ * Date: 2025-28-2 
+ */
+patch(MathHelper, "add", function(_original, a, b) {
+    return a + b
+});
+```
+
+## Test Thoroughly
+- **Isolate Patches:** Test patches in isolation to ensure they work as expected.
+- **Edge Cases:** Test edge cases to catch unexpected behavior.
+- **Integration Tests:** Ensure patches don’t break other parts of the application.
+**Why?** Patches can introduce subtle bugs that are hard to detect.
+
+## Unpatch When Done
+Always restore the original behavior when the patch is no longer needed.
+Use Tusk’s `unpatch` method to clean up.
+
+```ts title="unpatch.ts"
+// Apply patch
+patch(Array.prototype, "flat", function (original, depth) {
+    const flattened = original.call(this, depth); 
+    return flattened.map(() => 0); 
+});
+
+// Unpatch when done
+unpatch(Array.prototype, "flat");    
+```
+
+## Communicate with Your Team
+- **Code Reviews:** Discuss patches during code reviews to ensure they’re necessary and well-implemented.
+- **Documentation:** Share documentation about patches with your team.
+- **Naming Conventions:** Use clear naming conventions for patched methods (e.g., `_patchedMethod`).
+
+## Avoid Side Effects
+- **Global Changes:** Be cautious when patching global objects (e.g., Array.prototype).
+- **Third-Party Libraries:** Avoid patching third-party libraries unless absolutely necessary.
+- **Performance:** Ensure patches don’t introduce performance bottlenecks.
+
+---
+
+**🧠 Pro Tip** ╺╸ Document every patch and its purpose—future you (and your team) will thank you!

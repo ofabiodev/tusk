@@ -1,0 +1,45 @@
+---
+title: Monkey Patching
+icon: HiAcademicCap
+---
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">📦 What's Monkey Patching</span></div>
+
+Monkey patching is a technique that allows you to modify code at runtime by changing classes, modules, or functions.
+It enables you to extend or modify the behavior of existing code without altering its source files directly.
+
+---
+
+## Understanding Monkey Patching
+
+Think of monkey patching like applying a temporary patch or modification to a running program. 
+Just as you might patch a tire without replacing it, monkey patching lets you modify code behavior without changing the original source code.
+
+
+### Basic Example
+```ts title="example.ts"
+// Original code
+const MathHelper = {
+    add(num: number, num2: number) {
+        return num - num2
+    }
+}
+
+// Monkey patching
+MathHelper.add = (a, b) => {
+  return a + b;
+};
+```
+
+<Callout type="warn" title="Use with Caution">
+  Monkey patching, while powerful, comes with significant risks:
+  - Can lead to hard-to-debug issues if not properly tracked
+  - May break when the original code is updated
+  - Can cause unexpected behavior in production
+  - Makes code harder to maintain and understand
+  
+  Always document your patches and consider them as temporary solutions rather than permanent fixes.
+</Callout>
+
+---
+
+**🧠 Pro Tip** ╺╸ Use monkey patching sparingly—it’s powerful but can lead to hard-to-debug issues if overused!

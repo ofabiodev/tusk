@@ -1,0 +1,51 @@
+{
+  "name": "tusk",
+  "version": "1.0.0",
+  "description": "Tusk lets you carve into JavaScript, TypeScript, and beyond with raw power.",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx --watch playground/index.ts",
+    "publish": "npm publish",
+    "test": "npx poku --sequential --watch"
+  },
+  "keywords": [
+    "tusk",
+    "patch",
+    "monkey-patch",
+    "override",
+    "proxy",
+    "hook",
+    "intercept",
+    "modification",
+    "typescript",
+    "javascript",
+    "runtime",
+    "wrapper",
+    "polyfill",
+    "enhance",
+    "extend",
+    "hotfix",
+    "method-patching",
+    "dynamic-patching"
+  ],
+  "homepage": "https://tusk.js.org",
+  "author": {
+    "name": "ofabiodev",
+    "url": "https://ofabio.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ofabiodev/tusk",
+    "directory": "packages/tusk"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "listner": "^1.1.1",
+    "poku": "^3.0.1",
+    "tsup": "^8.4.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}

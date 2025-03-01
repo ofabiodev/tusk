@@ -1,0 +1,122 @@
+---
+title: Patch
+icon: HiPlusCircle
+---
+import { TypeTable } from "fumadocs-ui/components/type-table";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">➕ Method: Patch</span></div>
+
+The `patch` method is the **core feature of Tusk**, allowing you to dynamically modify or extend methods at runtime. 
+It’s designed to be **safe, clean, and easy to use**, making monkey patching a breeze! 🌬️
+
+---
+
+<Callout type="info" title="Differences Between 'original()' and 'original.call(this)'">
+  - **Use `original.call(this)` when:** The method depends on `this`, such as accessing object properties (`this.value`, `this.name`). Without `call(this)`, `this` might be `undefined`, leading to errors.
+  - **Use `original()` when:** The function does not rely on `this`, such as static functions (`Math.max`), standalone functions, or methods that only use passed arguments without referencing `this`.
+</Callout>
+
+## Syntax
+```ts
+patch(target: Object, methodName: string, implementation: Function): void;
+``` 
+
+## Parameters
+<TypeTable
+  type={{
+    target: {
+      description:
+        "The object or prototype you want to modify",
+      type: "Object",
+      required: true
+    },
+    methodName: {
+      description:
+        "The name of the method you want to patch.",
+      type: "string",
+      required: true
+    },
+    implementation: {
+      description:
+        "The new implementation of the method. Receives the original method as the first parameter.",
+      type: "Function",
+      required: true
+    },
+  }}
+/>
+
+## Usage Example
+Extending Array Prototype with a `sum` Method
+```ts title="math.ts"
+import { patch } from "tusk";
+
+patch(Array.prototype, "flat", function (original, depth) {
+    const flattened = original.call(this, depth); 
+    return flattened.map(() => 0); 
+});
+
+const map = [1, 2, 3, 4, 5];
+const flattenedArray = map.flat();
+console.log(flattenedArray); // Output: [0, 0, 0, 0]
+``` 
+
+### Fixing a Third-Party library
+Patch to avoid duplicates in `insertMultiple`
+```ts title="list.ts"
+import { patch } from "tusk";
+
+import { ListManager } from "listner";
+
+const oldManager = new ListManager();
+oldManager.insertMultiple([{ id: 1, name: "Item 1" }, { id: 2, name: "Item 2" }]);
+oldManager.insertMultiple([{ id: 2, name: "Item 2" }, { id: 3, name: "Item 3" }]);
+
+console.log(oldManager.getAll());
+
+/*                                                                                   */
+
+patch(ListManager.prototype, "insertMultiple", function(original, items) {
+    const existingItems = this.getAll();
+    const newItems = items.filter(item => 
+        !existingItems.some(existing => existing.id === item.id)
+    );
+    if (newItems.length > 0) {
+        original.call(this, newItems);
+    }
+});
+
+const manager = new ListManager();
+manager.insertMultiple([{ id: 1, name: "Item 1" }, { id: 2, name: "Item 2" }]);
+manager.insertMultiple([{ id: 2, name: "Item 2" }, { id: 3, name: "Item 3" }]);
+
+console.log(manager.getAll());
+```
+#### Output
+<Tabs items={["Before", "After"]}>
+    <Tab>
+        The item `{ id: 2, name: "Item 2" }` was added again because there was no check to avoid duplicates in the original method.
+        ```bash title="terminal"
+        [
+            { id: 1, name: "Item 1" },
+            { id: 2, name: "Item 2" },
+            { id: 2, name: "Item 2" },
+            { id: 3, name: "Item 3" }
+        ]
+        ```
+    </Tab>
+    <Tab>
+        After the patch, the duplicate `{ id: 2, name: "Item 2" }` was not added because the method now checks for existing items before insertion.
+        ```bash title="terminal"
+        [
+            { id: 1, name: "Item 1" },
+            { id: 2, name: "Item 2" },
+            { id: 3, name: "Item 3" }
+        ]
+        ```
+    </Tab>
+</Tabs>
+
+---
+
+**🧠 Pro Tip** ╺╸ Test your patches in a controlled environment before deploying to production to avoid unexpected side effects!

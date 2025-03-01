@@ -1,0 +1,8 @@
+node_modules
+build
+playground
+.DS_Store
+.vscode
+!.env.example
+.env.*
+.env

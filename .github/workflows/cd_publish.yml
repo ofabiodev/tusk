@@ -1,0 +1,68 @@
+name: "🚀 CD — Publish"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event.repository.fork == false
+    name: 🚀 Release
+    steps:
+      - name: 🔖 Release on Github
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: tusk
+          changelog-path: "CHANGELOG.md"
+
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: 👷 Setup Node.js
+        uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 🎯 Cache Dependencies
+        uses: actions/cache@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ hashFiles('packages/tusk/package-lock.json') }}
+          restore-keys: |
+            npm-linux-
+
+      - name: 📦 Install Dependencies
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          cd packages/tusk
+          npm ci
+
+      - name: 🏗️ Build
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          cd packages/tusk
+          npm run build
+
+      - name: 🚀 Publish Package
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/tusk
+          npm publish --access public

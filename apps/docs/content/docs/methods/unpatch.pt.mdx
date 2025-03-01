@@ -1,0 +1,64 @@
+---
+title: Desfazer Patch  
+icon: HiMinusCircle  
+---  
+import { TypeTable } from "fumadocs-ui/components/type-table";  
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">➖ Método: Unpatch</span></div>  
+
+O método `unpatch` é o seu **botão de desfazer** para monkey patching.  
+Ele restaura o método original, garantindo que seu código permaneça limpo e previsível.  
+
+---
+
+## Sintaxe  
+```ts
+unpatch(target: Object, methodName: string): void;
+```
+
+## Parâmetros  
+<TypeTable  
+  type={{  
+    target: {  
+      description: "O objeto ou protótipo onde o patch foi aplicado.",  
+      type: "Object",  
+      required: true  
+    },  
+    methodName: {  
+      description: "O nome do método a ser restaurado.",  
+      type: "string",  
+      required: true  
+    },  
+  }}  
+/>  
+
+## Exemplo de Uso  
+Restaurando o Protótipo Original de Array  
+```ts title="restore.ts"
+import { unpatch } from "tusk";
+
+unpatch(Array.prototype, "sum");
+```
+
+Revertendo um Patch em Biblioteca de Terceiros  
+```ts title="list.ts"
+import { patch, unpatch } from "tusk";
+import { ListManager } from "listner";
+
+patch(ListManager.prototype, "insertMultiple", function (items: any[]) {
+    items.forEach((newItem) => {
+        const exists = this.items.some((item) => 
+            Object.keys(newItem).every((key) => item[key] === newItem[key])
+        );
+        if (!exists) {
+            this.items.push(newItem)
+        }
+    })
+})
+
+unpatch(ListManager.prototype, "insertMultiple");
+```
+
+---
+
+**🧠 Dica Pro** ╺╸ Sempre use `unpatch` quando terminar para restaurar o comportamento original e manter seu código limpo!

@@ -1,0 +1,23 @@
+---
+title: Comparação  
+icon: HiScale  
+---  
+
+<div className="w-full flex items-center justify-center"><span className="text-4xl font-bold">🆚 Comparação: Monkey Patching vs Alternativas</span></div>  
+
+Quando se trata de modificar ou estender código, o monkey patching é apenas uma das muitas opções. Aqui está uma comparação detalhada para te ajudar a escolher a melhor abordagem para o seu caso.  
+
+---  
+
+| Recurso | Monkey Patching | Wrappers | Herança | Pull Requests |  
+| ------- | --------------- | ----------- |----------- | ------------- |  
+| Facilidade de Uso | ⭐⭐⭐⭐⭐<br />(Rápido e fácil)  | ⭐⭐⭐⭐<br />(Requer código extra)  | ⭐⭐⭐<br />(Limitado a sistemas baseados em classes) |⭐⭐<br />(Depende de aprovação do projeto) |  
+| Segurança | ⭐⭐<br />(Risco de efeitos colaterais) | ⭐⭐⭐⭐<br />(Mudanças isoladas) | ⭐⭐⭐⭐<br />(Mudanças controladas) | ⭐⭐⭐⭐⭐<br />(Correções oficiais) |  
+| Manutenibilidade | ⭐⭐<br />(Difícil de rastrear e depurar) | ⭐⭐⭐⭐<br />(Mais fácil de gerenciar) | ⭐⭐⭐⭐<br />(Hierarquia clara) | ⭐⭐⭐⭐⭐<br />(Parte do código oficial) |  
+| Performance | ⭐⭐⭐<br />(Depende da implementação) | ⭐⭐⭐⭐<br />(Overhead mínimo) | ⭐⭐⭐⭐<br />(Overhead mínimo) | ⭐⭐⭐⭐<br />(Overhead mínimo) |  
+| Impacto Global | ⭐⭐<br />(Afeta todo o tempo de execução) | ⭐⭐⭐⭐<br />(Localizado no wrapper) | ⭐⭐⭐⭐<br />(Localizado na subclasse) | ⭐⭐⭐⭐⭐<br />(Global, mas oficial) |  
+| Melhor Para | Correções rápidas, experimentos, customização | Mudanças isoladas, funções utilitárias | Sistemas baseados em classes, padrões OOP | Correções de longo prazo, contribuição para OSS |  
+
+---  
+
+**🧠 Dica Pro** ╺╸ Compare o monkey patching com alternativas como wrappers ou herança para escolher a melhor abordagem para o seu caso!

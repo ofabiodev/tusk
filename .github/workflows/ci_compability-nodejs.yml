@@ -1,0 +1,42 @@
+name: "🧪 CI — Compatibility"
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["14", "16", "18", "20", "22", "23"]
+    name: Node.js ${{ matrix.node-version }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 👷 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: 🎯 Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-linux-${{ matrix.node-version }}-${{ hashFiles('packages/tusk/package-lock.json') }}
+          restore-keys: |
+            npm-linux-${{ matrix.node-version }}-
+            npm-linux-
+
+      - name: 📦 Install Dependencies
+        run: |
+          cd packages/tusk
+          npm ci
+      
+      - name: 🧪 Run Tests
+        run: |
+          cd packages/tusk
+          npm run test
