@@ -42,7 +42,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "listner": "^1.1.1",
     "poku": "^3.0.1",
     "tsup": "^8.4.0",
     "tsx": "^4.19.3",
