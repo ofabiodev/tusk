@@ -22,21 +22,21 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       
-      - name: 🎯 Cache Dependencies
+      - name: 🎯 Cache pnpm dependencies
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: npm-linux-${{ matrix.node-version }}-${{ hashFiles('packages/tusk/package-lock.json') }}
+          path: ~/.pnpm-store
+          key: pnpm-linux-${{ matrix.node-version }}-${{ hashFiles('packages/tusk/pnpm-lock.yaml') }}
           restore-keys: |
-            npm-linux-${{ matrix.node-version }}-
-            npm-linux-
+            pnpm-linux-${{ matrix.node-version }}-
+            pnpm-linux-
 
       - name: 📦 Install Dependencies
         run: |
           cd packages/tusk
-          npm ci
+          pnpm install
       
       - name: 🧪 Run Tests
         run: |
           cd packages/tusk
-          npm run test
+          pnpm run test
