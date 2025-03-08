@@ -8,7 +8,7 @@
     "build": "tsup",
     "dev": "tsx --watch playground/index.ts",
     "publish": "npm publish",
-    "test": "npx poku --sequential"
+    "test": "poku --sequential"
   },
   "keywords": [
     "tusk",
