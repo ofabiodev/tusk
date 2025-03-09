@@ -1,6 +1,6 @@
 {
   "name": "tusk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tusk lets you carve into JavaScript, TypeScript, and beyond with raw power.",
   "main": "build/index.js",
   "type": "module",
