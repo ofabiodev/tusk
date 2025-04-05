@@ -1,3 +1,11 @@
+<h1 align="center">[DEPRECATED]</h1>
+<p align="center">
+  This project has been deprecated in favor of <i><a href="https://github.com/ofabiodev/tusk.js">tusk.js</a></i>.  
+  The deprecation is due to initial structural decisions that led to issues such as incorrect versioning (starting at <code>1.0.1</code>), which caused problems with the GitHub CLI publishing flow.  
+  Additionally, the lack of branching and committing directly to <code>main</code> made the history unclear and hard to maintain.  
+  <strong>Please refer to <i><a href="https://github.com/ofabiodev/tusk.js">tusk.js</a></i> for future updates and improvements.</strong>
+</p>
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/ofabiodev/tusk/main/.github/assets/icon.svg" alt="Tusk" width="200">
 </p>
